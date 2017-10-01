@@ -1,0 +1,42 @@
+* Temperatura Esterna
+
+vclient -h localhost --port 3002 getTempA
+getTempA:
+2.500000 Grad Celsius
+
+
+* getTempWWist
+Temperatura Acqua calda istantanea
+
+* getTempWWsoll
+Temperatura target acqua calda
+
+* getTempKist
+Temperatura caldaia
+
+* getTempKol
+Temperatura collettore solare (sonda tetto)
+
+* getTempSpu
+Temperatura solare acqua calda (sonda nel boiler?)
+
+* getBrennerStarts
+Numero accensioni bruciatore
+
+* getBrennerStunden1
+Ore di esercizio
+
+* getPumpeStatusSp ? stato pompa?
+1 => risc acceso? 0 => spento
+getPumpeStatusZirku
+getPumpeStatusSolar
+
+* getSolarStunden
+Nmero ore pompa circolazione solare
+
+* getSolarLeistung
+kWh solare prodotti
+
+
+
+[marco@earth ~]$ vclient -h localhost --port 3002 -c 'setTempWWsoll 20.0'
