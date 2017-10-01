@@ -13,18 +13,18 @@ var cmds = {
     "getTExtF"            : [null,  60, null, 1, "temp", "c"],
     "getTSolarColl"       : [null,  60, null, 2, "temp", "c"],
     "getTSan"             : [null,  10, null, 3, "temp", "c"],
-    "getTTargetSan"       : [null,  60, null, 4, "temp", "c"],
-        "getTempStp2"         : [null,  60, null, 5, "temp", "c"],
+    "getTTargetSan"       : [null,  30, null, 4, "temp", "c"],
+    "getTempStp2"         : [null,  60, null, 5, "temp", "c"],
     "getTCald"            : [null,   5, null, 6, "temp", "c"],
-        "getTempKsoll"        : [null,  60, null, 7, "temp", "c"],
-        "getTempVLsollM1"     : [null,  60, null, 8, "temp", "c"],
-    "getTGas"             : [null,  60, null, 9, "temp", "c"],
+    "getTempKsoll"        : [null,  60, null, 7, "temp", "c"],
+/*        "getTempVLsollM1"     : [null,  60, null, 8, "temp", "c"],*/
+    "getTGas"             : [null,  30, null, 9, "temp", "c"],
     "getStartsCount"      : [null,  30, null, 10, "", ""],
     "getBrucHours"        : [null,  60, null, 11, "", "ore"],
     "getBrucPerc"         : [null,   5, null, 12, "", "%"],
 /*        "getBrucStatLev"      : [null,   5, null, 13, "", "p"],*/
-        "getTempRL17A"        : [null,  30, null, 14, "temp", "c"],
-    "getTBoilerDown"      : [null,  10, null, 15, "temp", "c"],
+/*        "getTempRL17A"        : [null,  30, null, 14, "temp", "c"],*/
+    "getTBoilerDown"      : [null,  30, null, 15, "temp", "c"],
     /*    "getTBoilerUp"        : [null,   5, null, 16, "temp", "c"],*/
     "getStatusBoilerLoad" : [null,   5, null, 17, "", ""],
     "getSolarPumpRPM"     : [null,  20, null, 18, "", "%"],
@@ -117,29 +117,30 @@ setInterval(function() {
 
 	    result = line.split(" ");
 
-	    if ((result != null) && (result != "OK")) {
+	    if (result != null) {
+		if (result != "OK") {
 
-		if (result[0].length) {
+		    if (result[0].length) {
 
-		    /*var f = Math.round(parseFloat(result[0]) * 10) / 10;*/
-		    var f = Math.round(parseFloat(result[0]));
-		    
-		    if (cmds[current][2] != f) {
+			/*var f = Math.round(parseFloat(result[0]) * 10) / 10;*/
+			var f = Math.round(parseFloat(result[0]));
 			
-			cmds[current][2] = f;
-			console.log(current + ": " + f);
+			if (cmds[current][2] != f) {
+			    
+			    cmds[current][2] = f;
+			    console.log(current + ": " + f);
 
-			if (connected == true) {
-			    connection.rawWrite(cmds[current][3], f, cmds[current][4], cmds[current][5]);
+			    if (connected == true) {
+				connection.rawWrite(cmds[current][3], f, cmds[current][4], cmds[current][5]);
+			    }
+
+			    if (current == "getTTargetSan") {
+				connection.rawWrite(90, f, "temp", "c");
+			    }
 			}
+
 		    }
-
 		}
-
-		if (result.length > 1) {
-		    //			console.log(result[1]);
-		}
-		
 	    }
 	    
 	}
