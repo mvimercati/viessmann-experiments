@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $HOME/viessmann-experiments
+nohup ./vcontrold-start > ../srv.log &
+nohup node ./mqtt-cayenne.js > ../mqtt.log &
