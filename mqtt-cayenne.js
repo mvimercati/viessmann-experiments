@@ -3,7 +3,7 @@ const Cayenne = require('cayennejs');
 var connection =  new Cayenne.MQTT({
     username: "9add20f0-9651-11e7-94c8-a1bba3f5296f",
     password: "362012fd2e87f634ec6baa394c8b3c0874107795",
-    clientId: "2ede4a40-9666-11e7-9727-55550d1a07e7"
+    clientId: "3a5a6320-a6d0-11e7-bc55-51a105d3afc2"
 });
 
 
@@ -19,19 +19,19 @@ var cmds = {
     "getTempKsoll"        : [null,  60, null, 7, "temp", "c"],
 /*        "getTempVLsollM1"     : [null,  60, null, 8, "temp", "c"],*/
     "getTGas"             : [null,  30, null, 9, "temp", "c"],
-    "getStartsCount"      : [null,  30, null, 10, "", ""],
-    "getBrucHours"        : [null,  60, null, 11, "", "ore"],
-    "getBrucPerc"         : [null,   5, null, 12, "", "%"],
+    "getStartsCount"      : [null,  30, null, 10, "digital", "null"],
+    "getBrucHours"        : [null,  60, null, 11, "digital", "null"],
+    "getBrucPerc"         : [null,   5, null, 12, "analog", "p"],
 /*        "getBrucStatLev"      : [null,   5, null, 13, "", "p"],*/
 /*        "getTempRL17A"        : [null,  30, null, 14, "temp", "c"],*/
     "getTBoilerDown"      : [null,  30, null, 15, "temp", "c"],
     /*    "getTBoilerUp"        : [null,   5, null, 16, "temp", "c"],*/
-    "getStatusBoilerLoad" : [null,   5, null, 17, "", ""],
-    "getSolarPumpRPM"     : [null,  20, null, 18, "", "%"],
-    "getRiscPumpRPM"      : [null,  10, null, 19, "", "%"],
-    "getExtInputStatus"   : [null,  60, null, 20, "", ""],
-    "getSolarStunden"     : [null,  60, null, 21, "", "ore"],
-    "getSolarLeistung"    : [null,  60, null, 22, "", "kWh"]
+    "getStatusBoilerLoad" : [null,   5, null, 17, "digital", "d"],
+    "getSolarPumpRPM"     : [null,  20, null, 18, "analog", "p"],
+    "getRiscPumpRPM"      : [null,  10, null, 19, "analog", "p"],
+    "getExtInputStatus"   : [null,  60, null, 20, "digital", "d"],
+    "getSolarStunden"     : [null,  60, null, 21, "digital", "null"],
+    "getSolarLeistung"    : [null,  60, null, 22, "digital", "null"]
 };
 
 
@@ -75,7 +75,7 @@ setInterval(function() {
     
     if (connected == true) {
 	connection.rawWrite(100, f, "temp","c");
-	connection.rawWrite(200, d.getHours() * 10000 + d.getMinutes()*100 + d.getSeconds(), "","");
+	connection.rawWrite(200, d.getHours() * 10000 + d.getMinutes()*100 + d.getSeconds(), "digital","null");
     }
 
 }, 5000);
