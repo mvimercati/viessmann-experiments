@@ -1,2 +1,2 @@
 #!/bin/bash
-/home/pi/vcontrold/bin/vclient -h localhost -p 3002 -f /home/pi/vcontrold-config/list
+/home/pi/vcontrold/bin/vclient -h localhost -p 3002 -f /home/pi/viessmann-experiments/vcontrold-config/list
