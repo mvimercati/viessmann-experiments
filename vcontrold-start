@@ -1,0 +1,2 @@
+#!/bin/bash
+/home/pi/vcontrold/sbin/vcontrold -x /home/pi/vcontrold-config/vcontrold.xml -n 
