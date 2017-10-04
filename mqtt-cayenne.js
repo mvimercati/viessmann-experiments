@@ -5,6 +5,7 @@ require('./authentication.js');
 var connection =  new Cayenne.MQTT(credentials);
 
 var cmd_queue = [];
+var last_enabled_temp = "45";
 
 var cmds = {
     "getTExtF"            : [null,  60, null, 1, "temp", "c"],
@@ -37,8 +38,27 @@ connection.on("cmd90", function(data) {
     console.log(data);
     var temp = data["payload"].split(",")[1];
 
+    if (temp != "20") {
+	last_enabled_temp = temp;
+    }
+    
     cmd_queue.push("setTTargetSan "+temp+",getTTargetSan");
 });
+
+connection.on("cmd91", function(data) {
+    console.log(data);
+    var enable = data["payload"].split(",")[1];
+    var temp;
+
+    if (enable == "0") {
+	temp = "20";
+    } else {
+	temp = last_enabled_temp;
+    }
+    
+    cmd_queue.push("setTTargetSan "+temp+",getTTargetSan");
+});
+
 
 var connected = false;
 
@@ -141,6 +161,7 @@ setInterval(function() {
 
 			    if (current == "getTTargetSan") {
 				connection.rawWrite(90, f, "temp", "c");
+				connection.rawWrite(91, f < 21 ? 0 : 1, "", "");				
 			    }
 			}
 
