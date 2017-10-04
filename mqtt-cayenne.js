@@ -1,11 +1,8 @@
 const Cayenne = require('cayennejs');
 
-var connection =  new Cayenne.MQTT({
-    username: "9add20f0-9651-11e7-94c8-a1bba3f5296f",
-    password: "362012fd2e87f634ec6baa394c8b3c0874107795",
-    clientId: "3a5a6320-a6d0-11e7-bc55-51a105d3afc2"
-});
+require('./authentication.js');
 
+var connection =  new Cayenne.MQTT(credentials);
 
 var cmd_queue = [];
 
@@ -63,6 +60,14 @@ connection.on("disconnect", function() {
 	clientId: "2ede4a40-9666-11e7-9727-55550d1a07e7"
     });
 });
+
+setInterval(function() {
+
+    for (var key in cmds) {
+	cmds[key][0] = 0;    
+    }
+    
+}, 3600*1000);
 
 setInterval(function() {
 
@@ -126,7 +131,7 @@ setInterval(function() {
 			var f = Math.round(parseFloat(result[0]));
 			
 			if (cmds[current][2] != f) {
-			    
+
 			    cmds[current][2] = f;
 			    console.log(current + ": " + f);
 

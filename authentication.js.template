@@ -1,0 +1,5 @@
+global.credentials = {
+    username: "",
+    password: "",
+    clientId: ""
+}
