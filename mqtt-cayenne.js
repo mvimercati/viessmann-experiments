@@ -74,11 +74,7 @@ connection.on("disconnect", function() {
     connected = false;
     console.log("DISCONNECTED - TRY TO RECONNECT!!!!");
 
-    var connection = new Cayenne.MQTT({
-	username: "9add20f0-9651-11e7-94c8-a1bba3f5296f",
-	password: "362012fd2e87f634ec6baa394c8b3c0874107795",
-	clientId: "2ede4a40-9666-11e7-9727-55550d1a07e7"
-    });
+    var connection = new Cayenne.MQTT(credentials);
 });
 
 setInterval(function() {
@@ -119,8 +115,11 @@ setInterval(function() {
 	    cmds[key][0] = t;		    
 	}
     }
+
+    if (queue.length == 0) {
+	return;
+    }
     
-    console.log("--");
     console.log(queue.join(","));
     
     const spawn = require('child_process').spawnSync;
@@ -176,7 +175,7 @@ setInterval(function() {
     
     cmd_queue = [];
     
-}, 5000);
+}, 1000);
 
 
 
