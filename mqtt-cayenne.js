@@ -25,7 +25,7 @@ var cmds = {
     "getTBoilerDown"      : [null,  30, null, 15, "temp", "c"],
     /*    "getTBoilerUp"        : [null,   5, null, 16, "temp", "c"],*/
     "getStatusBoilerLoad" : [null,   5, null, 17, "digital", "d"],
-    "getSolarPumpRPM"     : [null,  20, null, 18, "analog", "p"],
+    "getSolarPumpRPM"     : [null,  20, null, 18, "digital", "d"],
     "getRiscPumpRPM"      : [null,  10, null, 19, "analog", "p"],
     "getExtInputStatus"   : [null,  60, null, 20, "digital", "d"],
     "getSolarStunden"     : [null,  60, null, 21, "digital", "null"],

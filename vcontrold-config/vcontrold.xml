@@ -324,8 +324,7 @@
 	  <macros>
 	    <macro name='SYNC'>
 	      <!--Command>SEND 04;WAIT 05</command-->
-	      <command>WAIT 05;SEND 01</command>
-	      
+	      <command>WAIT 05;SEND 01</command>	      
 	    </macro>
 	    <macro name='GETADDR'>
 	      <command>SEND F7</command>
@@ -346,7 +345,8 @@
 	      <send>GETADDR $addr $hexlen;RECV $len $unit</send>
 	    </command>
 	    <command name="setaddr">
-	      <send>SYNC;SETADDR $addr $hexlen;SEND BYTES $unit;RECV 1 SR</send>
+	      <!--send>SYNC;SETADDR $addr $hexlen;SEND BYTES $unit;RECV 1 SR</send-->
+	      <send>SYNC;SETADDR $addr $hexlen;SEND BYTES $unit;RECV 1 SR</send>	      
 	    </command>
             <command name="gettestaddr">
 	      <retry>3</retry>

@@ -40,3 +40,35 @@ kWh solare prodotti
 
 
 [marco@earth ~]$ vclient -h localhost --port 3002 -c 'setTempWWsoll 20.0'
+
+Codifiche manuale:
+
+* M1
+20xx Timer M1
+23xx Betrieb
+2500 getStatusFrostM1
+2544 getTempVLsollM1
+254C getMischerM1
+27xx setKA5 -> 27A5
+2900 getTempVListM1
+
+* M2
+30xx Timer M2
+33xx 
+3500 GetStatusFrostM2
+3544
+354C
+37xx setKA5M2 -> 27A5
+3900
+
+* M3
+47xx setKA5M3
+
+* Solar
+65xx 
+
+* Generale?
+77xx getAnlagenschema
+
+
+

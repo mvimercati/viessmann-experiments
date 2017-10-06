@@ -880,12 +880,12 @@
              <unit>RT</unit>
              <description>Velocita pompa Solare</description>
              <device ID="2053"/>
-<!-- Device 20CB eingefuegt von ceteris paribus 2010 -->
+<!-- Device 20CB eingefuegt von ceteris paribus 2010 
              <device ID="20CB">
                 <addr>6552</addr>
                 <len>2</len>
 		<unit>PR2</unit>
-             </device>
+             </device> -->
 </command>
 
 
