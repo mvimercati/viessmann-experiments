@@ -29,7 +29,8 @@ var cmds = {
     "getRiscPumpRPM"      : [null,  10, null, 19, "analog", "p"],
     "getExtInputStatus"   : [null,  60, null, 20, "digital", "d"],
     "getSolarStunden"     : [null,  60, null, 21, "digital", "null"],
-    "getSolarLeistung"    : [null,  60, null, 22, "digital", "null"]
+    "getSolarLeistung"    : [null,  60, null, 22, "digital", "null"],
+    "getMischerM1"        : [null,  30, null, 23, "analog", "p"]
 };
 
 

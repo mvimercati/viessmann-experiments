@@ -1,3 +1,5 @@
+VScotHO1_20
+
 * Temperatura Esterna
 
 vclient -h localhost --port 3002 getTempA
@@ -49,7 +51,9 @@ Codifiche manuale:
 2500 getStatusFrostM1
 2544 getTempVLsollM1
 254C getMischerM1
+
 27xx setKA5 -> 27A5
+
 2900 getTempVListM1
 
 * M2
@@ -67,8 +71,10 @@ Codifiche manuale:
 * Solar
 65xx 
 
-* Generale?
-77xx getAnlagenschema
+* Generale
+77xx
+773A DE1 Config
+7700 getAnlagenschema
 
 
 
