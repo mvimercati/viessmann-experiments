@@ -39,7 +39,11 @@ Nmero ore pompa circolazione solare
 * getSolarLeistung
 kWh solare prodotti
 
+* % Velocita' pompa interna 0x0A35 su 1 byte oppure 0x7660 sul secondo byte; il primo sembra lo stato 0/1
 
+  7663 pompa M1?
+  7665 pompa M2
+  solare?
 
 [marco@earth ~]$ vclient -h localhost --port 3002 -c 'setTempWWsoll 20.0'
 

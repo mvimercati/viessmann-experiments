@@ -12,29 +12,32 @@ var queue = [];
 
 
 var cmds = {
-    "getTExtF"            : [null,  60, null, 1, "temp", "c",  '800', 2, 10],
-    "getTSolarColl"       : [null,  60, null, 2, "temp", "c", '6564', 2, 10],
-    "getTSan"             : [null,  10, null, 3, "temp", "c",  '804', 2, 10],
-    "getTTargetSan"       : [null,  30, null, 4, "temp", "c", '6300', 1, 1],
-    "getTempStp2"         : [null,  60, null, 5, "temp", "c",  '814', 2, 10],
-    "getTCald"            : [null,   5, null, 6, "temp", "c",  '802', 2, 10],
-    "getTempKsoll"        : [null,  60, null, 7, "temp", "c", '555A', 2, 10],
-    /*        "getTempVLsollM1"     : [null,  60, null, 8, "temp", "c"],*/
-    "getTGas"             : [null,  30, null, 9, "temp", "c",  '808', 2, 10],
-    "getStartsCount"      : [null,  30, null, 10, "digital", "null", '88A', 2, 1],
-    "getBrucHours"        : [null,  60, null, 11, "digital", "null", '8A7', 4, 3600],
-    "getBrucPerc"         : [null,   5, null, 12, "analog", "p", 'A38F', 1, 2],
-    /*        "getBrucStatLev"      : [null,   5, null, 13, "", "p"],*/
-    /*        "getTempRL17A"        : [null,  30, null, 14, "temp", "c"],*/
-    "getTBoilerDown"      : [null,  30, null, 15, "temp", "c", '6566', 2, 10],
-    /*    "getTBoilerUp"        : [null,   5, null, 16, "temp", "c"],*/
-    "getStatusBoilerLoad" : [null,   5, null, 17, "digital", "null", '6513', 1, 1],
-    "getSolarPumpRPM"     : [null,  20, null, 18, "digital", "null", '6552', 1, 1],
-    "getRiscPumpRPM"      : [null,  10, null, 19, "analog", "p", '7660', 2, 1],
-    "getExtInputStatus"   : [null,  60, null, 20, "digital", "d", 'A80', 1, 1],
-    "getSolarStunden"     : [null,  60, null, 21, "digital", "null", '6568', 2, 1],
-    "getSolarLeistung"    : [null,  60, null, 22, "digital", "null", '6560', 4, 1],
-    "getMischerM1"        : [null,  30, null, 23, "digital", "null", 'A10', 1, 1]
+    "OutdoorTemp"         : [null,  60, null,  1, "temp", "c",       '5525', 2, 10],
+    "SolarPanelTemp"      : [null,  60, null,  2, "temp", "c",       '6564', 2, 10],
+    "HotWaterTemp"        : [null,  30, null,  3, "temp", "c",       '0804', 2, 10],
+    "HotWaterTempTarget"  : [null,  30, null,  4, "temp", "c",       '6300', 1, 1],
+    "BurnerTemp"          : [null,   5, null,  6, "temp", "c",       '0802', 2, 10],
+    "HeatingTempTarget"   : [null,  60, null,  7, "temp", "c",       '555A', 2, 10],
+    "ExhaustGasTemp"      : [null,  30, null,  9, "temp", "c",       '0808', 2, 10],
+    "StartsCounter"       : [null,  60, null, 10, "digital", "null", '088A', 2, 1],
+    "RuntimeHoursBurner"  : [null, 600, null, 11, "digital", "null", '08A7', 4, 3600],
+    "BurnerPowerThrottle" : [null,   5, null, 12, "analog", "p",     'A38F', 1, 2],
+    "BoilerLowerTemp"     : [null,  30, null, 15, "temp", "c",       '6566', 2, 10],
+    "BoilerLoading"       : [null,   5, null, 17, "digital", "null", '6513', 1, 1],
+    "SolarPumpActive"     : [null,  30, null, 18, "digital", "null", '6552', 1, 1],
+    "InternalPump"        : [null,   5, null, 19, "analog", "p",     '0A3C', 1, 1],
+    "HeatingRequest"      : [null,  60, null, 20, "digital", "d",    '0A80', 1, 1],
+    "RuntimeHoursSolar"   : [null, 900, null, 21, "digital", "null", '6568', 2, 1],
+    "TotalSolarEnergy"    : [null, 120, null, 22, "digital", "null", '6560', 4, 1],
+    "SwitchingValvePos"   : [null,  15, null, 23, "digital", "null", '0A10', 1, 1],
+
+/*    "MandataFlowTemp?"    : [null,  60, null, 24, "temp", "c",       '080C', 2, 10],*/
+/*    "ReturnTemp?"         : [null,  60, null, 25, "temp", "c",       '080A', 2, 10],*/
+/*    "WaterFlow?"          : [null,  60, null, 26, "", "",            '0C24', 2, 1],*/
+    "RoomTemp"            : [null,  60, null, 27, "", "",            '2306', 1, 1],
+/*    "StatoPompaRisc?"     : [null,  60, null, 28, "", "",            '7663', 2, 256],*/
+    "EnableThermostat"    : [null,  60, null, 29, "", "",            '773A', 1, 1]
+    
 };
 
 
@@ -89,9 +92,8 @@ connection.on("cmd90", function(data) {
 	last_enabled_temp = temp;
     }
 
-    write("getTTargetSan", temp);
-    read("getTTargetSan");
-    //cmd_queue.push("setTTargetSan "+temp+",getTTargetSan");
+    write("HotWaterTempTarget", temp);
+    read("HotWaterTempTarget");
 });
 
 connection.on("cmd91", function(data) {
@@ -106,8 +108,8 @@ connection.on("cmd91", function(data) {
     }
 
 
-    write("getTTargetSan", temp);
-    read("getTTargetSan");
+    write("HotWaterTempTarget", temp);
+    read("HotWaterTempTarget");
     
     //cmd_queue.push("setTTargetSan "+temp+",getTTargetSan");
 });
@@ -198,7 +200,7 @@ function update(key, value)
 	    connection.rawWrite(cmds[key][3], value, cmds[key][4], cmds[key][5]);
 	}
 
-	if (key == "getTTargetSan") {
+	if (key == "HotWaterTempTarget") {
 	    connection.rawWrite(90, value, "temp", "c");
 	    connection.rawWrite(91, value < 21 ? 0 : 1, "", "");
 	}
