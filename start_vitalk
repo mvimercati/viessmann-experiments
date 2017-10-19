@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd $HOME/vitalk
+nohup ./vitalk -t /dev/ttyUSB0 > /dev/null &
+sleep 3
+cd $HOME/viessmann-experiments
+nohup node ./vitalk-cayenne.js > ../vitalk.log &
