@@ -68,8 +68,6 @@ vitalk.on('data', (data) => {
 	return;
     }
 
-    //console.log(data.toString());
-    
     if (data.toString().startsWith("OK")) {
 	return;
     }
@@ -84,10 +82,7 @@ vitalk.on('data', (data) => {
 	    v = (v * 256) + Number(b[i]); 	    
 	}
 
-	//console.log("Received "+key+" = " + v / cmds[key][8]);
-
 	update(key, v);
-	
 	sem.leave();
     });
 });
@@ -121,13 +116,23 @@ connection.on("cmd91", function(data) {
 	temp = last_enabled_temp;
     }
 
-
     write("HotWaterTempTarget", temp);
     read("HotWaterTempTarget");
-    
-    //cmd_queue.push("setTTargetSan "+temp+",getTTargetSan");
 });
 
+connection.on("cmd92", function(data) {
+    console.log(data);
+    var enable = data["payload"].split(",")[1];
+    var temp;
+
+    if (enable == "0") {
+	write("EnableThermostat", 0);
+    } else {
+	write("EnableThermostat", 1);
+    }
+
+    read("EnableThermostat");
+});
 
 var connected = false;
 
@@ -191,12 +196,6 @@ setInterval(function() {
 
 	}
     }
-/*
-    if (queue.length == 0) {
-	return;
-    }
-*/
-
 });
 
 function update(key, value)
@@ -218,6 +217,10 @@ function update(key, value)
 	    connection.rawWrite(90, value, "temp", "c");
 	    connection.rawWrite(91, value < 21 ? 0 : 1, "", "");
 	}
+
+	if (key == "EnableThermostat") {
+	    connection.rawWrite(92, value, "", "");
+	}
     }
     
 }
@@ -238,14 +241,8 @@ function write(key, value)
 {
     sem.take( function() {
 
-	console.log("WRI " +key);
-
 	value = value * cmds[key][8];
-
-	console.log(value);
-	
 	vitalk.write("rs "+cmds[key][6]+" "+value+"\n");
-
 	sem.leave();
     });
 }
