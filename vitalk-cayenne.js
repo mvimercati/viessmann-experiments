@@ -28,7 +28,7 @@ var cmds = {
     "InternalPump"        : [null,   5, null, 19, "analog", "p",     '0A3C', 1, 1,    1],
     "HeatingRequest"      : [null,  60, null, 20, "digital", "d",    '0A80', 1, 1,    1],
     "RuntimeHoursSolar"   : [null, 900, null, 21, "digital", "null", '6568', 2, 1,    1],
-    "TotalSolarEnergy"    : [null, 120, null, 22, "digital", "null", '6560', 4, 1,    1], /* kWh */
+    "TotalSolarEnergy"    : [null, 120, null, 22, "digital", "null", '6560', 4, 1,    1],
     "SwitchingValvePos"   : [null,  15, null, 23, "digital", "null", '0A10', 1, 1,    1],
 
 /*    "MandataFlowTemp?"    : [null,  60, null, 24, "temp", "c",       '080C', 2, 10],*/
@@ -39,18 +39,13 @@ var cmds = {
 
     "EnableThermostat"    : [null,  60, null, 29, "", "",            '773A', 1, 1,    1],
     "StartsCounterSolar"  : [null, 120, null, 30, "", "",            'CF50', 4, 1,    1],
-    "DailySolarEnergy"    : [null, 120, null, 31, "", "",            'CF30', 4, 1000, 10], /* Wh */
+    "DailySolarEnergy"    : [null, 120, null, 31, "", "",            'CF30', 4, 1000, 10],
 
 /*    "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
     
 
-/*    "solar"    : [null, 5, null, 32, "", "",            'CF00',  32, 1],*/    
-    
-    
-/*    "sol1"       : [null,   5, null, 30, "", "", '655C', 2, 1],
-    "sol2"       : [null,   5, null, 30, "", "", '656A', 2, 1],
-  */
-    
+    /*"solar"       : [null, 5, null, 40, "", "",            'CF**00-19',  19, 1, 1],*/
+    /*"hotwater"    : [null, 5, null, 40, "", "",            '67**56-XX',   2, 1, 1],*/
     
 };
 

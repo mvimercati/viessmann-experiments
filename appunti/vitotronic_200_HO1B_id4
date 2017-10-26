@@ -72,14 +72,19 @@ Codifiche manuale:
 * M3
 47xx setKA5M3
 
-* Solar
-65xx 
+* Solare qualcosa
+65**
+
+* Acqua Calda
+67**
 
 * Generale
 77xx
 773A DE1 Config
 7700 getAnlagenschema
 
+* Solar
+CFxx (0-19 byte)
 
 
 0x6500
