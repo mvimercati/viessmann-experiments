@@ -34,19 +34,23 @@ var cmds = {
 /*    "MandataFlowTemp?"    : [null,  60, null, 24, "temp", "c",       '080C', 2, 10],*/
 /*    "ReturnTemp?"         : [null,  60, null, 25, "temp", "c",       '080A', 2, 10],*/
 /*    "WaterFlow?"          : [null,  60, null, 26, "", "",            '0C24', 2, 1],*/
-    "RoomTemp"            : [null,  60, null, 32, "temp", "c",       '2306', 1, 1,    1],
 /*    "StatoPompaRisc?"     : [null,  60, null, 28, "", "",            '7663', 2, 256],*/
 
     "EnableThermostat"    : [null,  60, null, 29, "", "",            '773A', 1, 1,    1],
     "StartsCounterSolar"  : [null, 120, null, 30, "", "",            'CF50', 4, 1,    1],
     "DailySolarEnergy"    : [null, 120, null, 31, "", "",            'CF30', 4, 1000, 10],
-
+    "RoomTemp"            : [null,  60, null, 32, "temp", "c",       '2306', 1, 1,    1],
+    
+    "ActiveDEInput"       : [null,  60, null, 33, "", "",            '27D8', 1, 1,    1],
+    
+    
 /*    "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
     
-
+/*    "solar"       : [null, 30, null, 40, "", "",            'CFB0',  24, 1, 1],*/
+    
     /*"solar"       : [null, 5, null, 40, "", "",            'CF**00-19',  19, 1, 1],*/
     /*"hotwater"    : [null, 5, null, 40, "", "",            '67**56-XX',   2, 1, 1],*/
-    
+    /* CFC7 /C6 pompa solare */
 };
 
 
@@ -129,6 +133,21 @@ connection.on("cmd92", function(data) {
     read("EnableThermostat");
 });
 
+connection.on("cmd93", function(data) {
+    console.log(data);
+    var enable = data["payload"].split(",")[1];
+    var temp;
+
+    if (enable == "0") {
+	write("ActiveDEInput", 1);
+    } else {
+	write("ActiveDEInput", 3);
+    }
+
+    read("ActiveDEInput");
+});
+
+
 var connected = false;
 
 connection.connect( function(data) {
@@ -204,9 +223,11 @@ function update(key, value)
 	
 	console.log(key + ": " + value);
 
-	if (connected == true) {
-	    connection.rawWrite(cmds[key][3], value, cmds[key][4], cmds[key][5]);
+	if (connected == false) {
+	    return;
 	}
+
+	connection.rawWrite(cmds[key][3], value, cmds[key][4], cmds[key][5]);
 
 	if (key == "HotWaterTempTarget") {
 	    connection.rawWrite(90, value, "temp", "c");
@@ -215,6 +236,10 @@ function update(key, value)
 
 	if (key == "EnableThermostat") {
 	    connection.rawWrite(92, value, "", "");
+	}
+
+	if (key == "ActiveDEInput") {
+	    connection.rawWrite(93, value == 1 ? 0 : 1, "", "");
 	}
     }
     
