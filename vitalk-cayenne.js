@@ -31,8 +31,8 @@ var cmds = {
     "TotalSolarEnergy"    : [null, 120, null, 22, "digital", "null", '6560', 4, 1,    1, 0],
     "SwitchingValvePos"   : [null,  15, null, 23, "digital", "null", '0A10', 1, 1,    1, 0],
 
-    "FlowTemp"            : [null,  60, null, 24, "temp", "c",       '080C', 2, 10,   1, 0],
-    "ReturnTemp"          : [null,  60, null, 25, "temp", "c",       '080A', 2, 10,   1, 0],
+    "FlowTemp"            : [null,  60, null, 24, "temp", "c",       '080C', 2, 10,  10, 0],
+    "ReturnTemp"          : [null,  60, null, 25, "temp", "c",       '080A', 2, 10,  10, 0],
     "WaterFlow"           : [null,  60, null, 26, "", "",            '0C24', 2, 1,    1, 0],
     "HeatingPumpRPM"      : [null,  60, null, 28, "", "",            '7663', 1, 1,    1, 1],
 
@@ -41,11 +41,14 @@ var cmds = {
     "DailySolarEnergy"    : [null, 120, null, 31, "", "",            'CF30', 4, 1000, 10, 0],
 /*  "RoomTemp"            : [null,  60, null, 32, "temp", "c",       '2306', 1, 1,    1, 0], */
     "ActiveDEInput"       : [null,  60, null, 33, "", "",            '27D8', 1, 1,    1, 0],
-    
-    
+
 /*    "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
     
     "SolarPumpRPM"        : [null, 30, null, 34, "", "",             'CFB0', 1, 1, 1, 23],
+
+    "ACSTemp"             : [null,  20, null, 35, "temp", "c",       '0814', 2, 10,  10, 0],
+    "ComfortTemp"         : [null,  20, null, 36, "temp", "c",       '0812', 2, 10,  10, 0],
+    
     
 };
 
