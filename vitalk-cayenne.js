@@ -26,14 +26,14 @@ var cmds = {
     "BoilerLoading"       : [null,   5, null, 17, "digital", "null", '6513', 1, 1,    1, 0],
 /*  "SolarPumpActive"     : [null,  30, null, 18, "digital", "null", '6552', 1, 1,    1, 0],*/
     "InternalPumpRPM"     : [null,   5, null, 19, "analog", "p",     '0A3C', 1, 1,    1, 0],
-    "HeatingRequest"      : [null,  60, null, 20, "digital", "d",    '0A80', 1, 1,    1, 0],
+/*  "HeatingRequest"      : [null,  60, null, 20, "digital", "d",    '0A80', 1, 1,    1, 0],*/
     "RuntimeHoursSolar"   : [null, 900, null, 21, "digital", "null", '6568', 2, 1,    1, 0],
     "TotalSolarEnergy"    : [null, 120, null, 22, "digital", "null", '6560', 4, 1,    1, 0],
     "SwitchingValvePos"   : [null,  15, null, 23, "digital", "null", '0A10', 1, 1,    1, 0],
 
-    "FlowTemp"            : [null,  60, null, 24, "temp", "c",       '080C', 2, 10,  10, 0],
-    "ReturnTemp"          : [null,  60, null, 25, "temp", "c",       '080A', 2, 10,  10, 0],
-    "WaterFlow"           : [null,  60, null, 26, "", "",            '0C24', 2, 1,    1, 0],
+/*    "FlowTemp"            : [null,  60, null, 24, "temp", "c",       '080C', 2, 10,  10, 0], sempre 20 */
+/*    "ReturnTemp"          : [null,  60, null, 25, "temp", "c",       '080A', 2, 10,  10, 0], sempre 20 */
+/*    "WaterFlow"           : [null,  60, null, 26, "", "",            '0C24', 2, 1,    1, 0], sempre 0 */
     "HeatingPumpRPM"      : [null,  60, null, 28, "", "",            '7663', 1, 1,    1, 1],
 
     "EnableThermostat"    : [null,  60, null, 29, "", "",            '773A', 1, 1,    1, 0],
@@ -42,10 +42,9 @@ var cmds = {
 /*  "RoomTemp"            : [null,  60, null, 32, "temp", "c",       '2306', 1, 1,    1, 0], */
     "ActiveDEInput"       : [null,  60, null, 33, "", "",            '27D8', 1, 1,    1, 0],
 
-/*    "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
+/*  "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
     
     "SolarPumpRPM"        : [null, 30, null, 34, "", "",             'CFB0', 1, 1, 1, 23],
-
     "ACSTemp"             : [null,  20, null, 35, "temp", "c",       '0814', 2, 10,  10, 0],
     "ComfortTemp"         : [null,  20, null, 36, "temp", "c",       '0812', 2, 10,  10, 0],
     
@@ -62,15 +61,19 @@ const vitalk = net.createConnection({ port: 3083 }, () => {
 
 vitalk.on('data', (data) => {
 
+    console.log(data.toString());
+    
     if (data.toString().startsWith("Welcome")) {
 	return;
     }
 
+    sem.leave();
+    
     if (data.toString().startsWith("OK")) {
 	return;
     }
     
-    sem.take(function() { 
+    /*sem.take(function() { */
 	key = queue.shift();
 
 	var b = data.toString().split(";");
@@ -81,8 +84,10 @@ vitalk.on('data', (data) => {
 	}
 
 	update(key, v);
-	sem.leave();
-    });
+	//sem.leave();
+    /*});*/
+
+    
 });
 
 vitalk.on('end', () => {
@@ -254,7 +259,7 @@ function read(key)
 	
 	vitalk.write("rg "+cmds[key][6]+" "+len+"\n");
 
-	sem.leave();
+	//sem.leave();
     });
 }
 
@@ -264,7 +269,7 @@ function write(key, value)
 
 	value = value * cmds[key][8];
 	vitalk.write("rs "+cmds[key][6]+" "+value+"\n");
-	sem.leave();
+	//sem.leave();
     });
 }
 
