@@ -12,9 +12,9 @@ var queue = [];
 
 
 var cmds = {
-    "OutdoorTemp"         : [null,  60, null,  1, "temp", "c",       '5525', 2, 10,  10, 0],
-    "SolarPanelTemp"      : [null,  60, null,  2, "temp", "c",       '6564', 2, 10,  10, 0],
-    "HotWaterTemp"        : [null,  30, null,  3, "temp", "c",       '0804', 2, 10,  10, 0],
+    "OutdoorTemp"         : [null,  60, null,  1, "temp", "c",       '5525', 2, 10,   1, 0],
+    "SolarPanelTemp"      : [null,  60, null,  2, "temp", "c",       '6564', 2, 10,   1, 0],
+    "HotWaterTemp"        : [null,  30, null,  3, "temp", "c",       '0804', 2, 10,   1, 0],
     "HotWaterTempTarget"  : [null,  30, null,  4, "temp", "c",       '6300', 1, 1,    1, 0],
     "BurnerTemp"          : [null,   5, null,  6, "temp", "c",       '0802', 2, 10,   1, 0],
     "HeatingTempTarget"   : [null,  60, null,  7, "temp", "c",       '555A', 2, 10,   1, 0],
@@ -22,7 +22,7 @@ var cmds = {
     "StartsCounterBurner" : [null,  60, null, 10, "digital", "null", '088A', 2, 1,    1, 0],
     "RuntimeHoursBurner"  : [null, 600, null, 11, "digital", "null", '08A7', 4, 3600, 1, 0],
     "BurnerPowerThrottle" : [null,   5, null, 12, "analog", "p",     'A38F', 1, 2,    1, 0],
-    "BoilerLowerTemp"     : [null,  30, null, 15, "temp", "c",       '6566', 2, 10,  10, 0],
+    "BoilerLowerTemp"     : [null,  30, null, 15, "temp", "c",       '6566', 2, 10,   1, 0],
     "BoilerLoading"       : [null,   5, null, 17, "digital", "null", '6513', 1, 1,    1, 0],
 /*  "SolarPumpActive"     : [null,  30, null, 18, "digital", "null", '6552', 1, 1,    1, 0],*/
     "InternalPumpRPM"     : [null,   5, null, 19, "analog", "p",     '0A3C', 1, 1,    1, 0],
@@ -45,8 +45,8 @@ var cmds = {
 /*  "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
     
     "SolarPumpRPM"        : [null, 30, null, 34, "", "",             'CFB0', 1, 1, 1, 23],
-    "ACSTemp"             : [null,  20, null, 35, "temp", "c",       '0814', 2, 10,  10, 0],
-    "ComfortTemp"         : [null,  20, null, 36, "temp", "c",       '0812', 2, 10,  10, 0],
+/*    "ACSTemp"             : [null,  20, null, 35, "temp", "c",       '0814', 2, 10,  10, 0],*/
+/*    "ComfortTemp"         : [null,  20, null, 36, "temp", "c",       '0812', 2, 10,  10, 0],*/
     
     
 };
@@ -180,7 +180,7 @@ setInterval(function() {
     }
     
 }, 3600*1000);
-
+/*
 setInterval(function() {
 
     const spawn = require('child_process').spawnSync;
@@ -196,7 +196,7 @@ setInterval(function() {
     }
 
 }, 5000);
-
+*/
 setInterval(function() {
 
     if (connected == false) {
