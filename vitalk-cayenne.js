@@ -6,7 +6,7 @@ var sem = require('semaphore')(1);
 var connection =  new Cayenne.MQTT(credentials);
 
 var cmd_queue = [];
-var last_enabled_temp = "45";
+var last_enabled_temp = "42";
 
 var queue = [];
 
@@ -80,9 +80,13 @@ vitalk.on('data', (data) => {
 	var v = 0;
 
 	for (i = (cmds[key][10] + cmds[key][7] - 1); i >= (cmds[key][10]); i--) {
-	    v = (v * 256) + Number(b[i]); 	    
+	    v = (v * 256) + Number(b[i]);
 	}
 
+    if ((cmds[key][7] == 2) && (v > 32768)) {
+	v = v - 65536;
+    }
+    
 	update(key, v);
 	//sem.leave();
     /*});*/
