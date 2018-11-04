@@ -9,7 +9,9 @@ var cmd_queue = [];
 var last_enabled_temp = "42";
 
 var queue = [];
-
+var inhibitDeInputs = false;
+var reenableCounter = 0;
+var lastDEInput = 1;
 
 var cmds = {
     "OutdoorTemp"         : [null,  60, null,  1, "temp", "c",       '5525', 2, 10,   1, 0],
@@ -36,11 +38,11 @@ var cmds = {
 /*    "WaterFlow"           : [null,  60, null, 26, "", "",            '0C24', 2, 1,    1, 0], sempre 0 */
     "HeatingPumpRPM"      : [null,  60, null, 28, "", "",            '7663', 1, 1,    1, 1],
 
-    "EnableThermostat"    : [null,  60, null, 29, "", "",            '773A', 1, 1,    1, 0],
+    "EnableThermostat"    : [null,  5, null, 29, "", "",            '773A', 1, 1,    1, 0],
 /*  "StartsCounterSolar"  : [null, 120, null, 30, "", "",            'CF50', 4, 1,    1, 0], */
     "DailySolarEnergy"    : [null, 120, null, 31, "", "",            'CF30', 4, 1000, 10, 0],
 /*  "RoomTemp"            : [null,  60, null, 32, "temp", "c",       '2306', 1, 1,    1, 0], */
-    "ActiveDEInput"       : [null,  60, null, 33, "", "",            '27D8', 1, 1,    1, 0],
+    "ActiveDEInput"       : [null,  5, null, 33, "", "",            '27D8', 1, 1,    1, 0],
 
 /*  "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
     
@@ -225,6 +227,19 @@ function update(key, value)
     value = value / cmds[key][8];
     value = Math.round( value * cmds[key][9] ) / cmds[key][9];
 
+    if ((inhibitDeInputs == true) && (key == "BoilerLoading") && (value == 0))
+    {
+	reenableCounter--;
+	console.log("Enable inputs in a while");
+	if (reenableCounter == 0)
+	{
+	    console.log("Reenable inputs");
+	    inhibitDeInputs = false;
+	    write("ActiveDEInput", lastDEInput);
+	    read("ActiveDEInput");
+	}
+    }
+    
     if (cmds[key][2] != value) {
 
 	cmds[key][2] = value;
@@ -237,16 +252,30 @@ function update(key, value)
 
 	connection.rawWrite(cmds[key][3], value, cmds[key][4], cmds[key][5]);
 
-	if (key == "HotWaterTempTarget") {
+	if ((key == "BoilerLoading") && (value == 1))
+	{
+	    console.log("Disable Inputs");
+	    lastDEInput = cmds["ActiveDEInput"][2];
+	    write("ActiveDEInput", 0);
+	    read("ActiveDEInput");
+	    
+	    inhibitDeInputs = true;
+	    reenableCounter = 20;
+	}
+	
+	if (key == "HotWaterTempTarget")
+	{
 	    connection.rawWrite(90, value, "temp", "c");
 	    connection.rawWrite(91, value < 21 ? 0 : 1, "", "");
 	}
 
-	if (key == "EnableThermostat") {
+	if (key == "EnableThermostat")
+	{
 	    connection.rawWrite(92, value, "", "");
 	}
 
-	if (key == "ActiveDEInput") {
+	if (key == "ActiveDEInput")
+	{
 	    connection.rawWrite(93, value == 1 ? 0 : 1, "", "");
 	}
     }
