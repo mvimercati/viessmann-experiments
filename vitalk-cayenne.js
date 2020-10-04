@@ -1,9 +1,5 @@
 const Cayenne = require('cayennejs');
 
-let Controller = require('node-pid-controller');
-let pid = new Controller(0.1, 0, 100);
-pid.setTarget(60);
-
 require('./authentication.js');
 var sem = require('semaphore')(1);
 
@@ -36,25 +32,19 @@ var cmds = {
     "RuntimeHoursSolar"   : [null, 900, null, 21, "digital", "null", '6568', 2, 1,    1, 0],
     "TotalSolarEnergy"    : [null, 120, null, 22, "digital", "null", '6560', 4, 1,    1, 0],
     "SwitchingValvePos"   : [null,  15, null, 23, "digital", "null", '0A10', 1, 1,    1, 0],
-
 /*    "FlowTemp"            : [null,  60, null, 24, "temp", "c",       '080C', 2, 10,  10, 0], sempre 20 */
 /*    "ReturnTemp"          : [null,  60, null, 25, "temp", "c",       '080A', 2, 10,  10, 0], sempre 20 */
 /*    "WaterFlow"           : [null,  60, null, 26, "", "",            '0C24', 2, 1,    1, 0], sempre 0 */
     "HeatingPumpRPM"      : [null,  60, null, 28, "", "",            '7663', 1, 1,    1, 1],
-
     "EnableThermostat"    : [null,  60, null, 29, "", "",            '773A', 1, 1,    1, 0],
 /*  "StartsCounterSolar"  : [null, 120, null, 30, "", "",            'CF50', 4, 1,    1, 0], */
     "DailySolarEnergy"    : [null, 120, null, 31, "", "",            'CF30', 4, 1000, 10, 0],
 /*  "RoomTemp"            : [null,  60, null, 32, "temp", "c",       '2306', 1, 1,    1, 0], */
     "ActiveDEInput"       : [null,  5, null, 33, "", "",            '27D8', 1, 1,    1, 0],
-
-/*  "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/
-    
+/*  "DailySolarEnergyArray0"    : [null, 5, null, 32, "", "",            'CF30', 32, 1],*/ 
     "SolarPumpRPM"        : [null, 30, null, 34, "", "",             'CFB0', 1, 1, 1, 23],
 /*    "ACSTemp"             : [null,  20, null, 35, "temp", "c",       '0814', 2, 10,  10, 0],*/
 /*    "ComfortTemp"         : [null,  20, null, 36, "temp", "c",       '0812', 2, 10,  10, 0],*/
-    
-    
 };
 
 
@@ -237,20 +227,22 @@ function update(key, value)
 	console.log("Enable inputs in a while");
 	if (reenableCounter == 0)
 	{
+	    if (lastDEInput == 0)
+	    {
+		lastDEInput = 1;
+	    }
 	    console.log("Reenable inputs to " + lastDEInput);
 	    inhibitDeInputs = false;
 	    write("ActiveDEInput", lastDEInput);
-	    read("ActiveDEInput");
 	}
     }
 
-    if (key == "HotWaterTemp")
+    if ((inhibitDeInputs == false) && (key == "ActiveDEInput"))
     {
-	pid_out = pid.update(value);
-	console.log("----------------------------> PID_OUTPUT: " + pid_out + " / " + value);
-	connection.rawWrite(95, pid_out, "temp", "c");
+	lastDEInput = value;
+	console.log("LastDEInput was " + lastDEInput);
     }
-    
+
     if (cmds[key][2] != value) {
 
 	cmds[key][2] = value;
@@ -265,10 +257,8 @@ function update(key, value)
 
 	if ((inhibitDeInputs == false) && (key == "BoilerLoading") && (value == 1))
 	{
-	    lastDEInput = cmds["ActiveDEInput"][2];
-	    console.log("Disable Inputs. Was " + lastDEInput);
+	    console.log("Disable Inputs");
 	    write("ActiveDEInput", 0);
-	    read("ActiveDEInput");
 	    
 	    inhibitDeInputs = true;
 	    reenableCounter = 20;
@@ -287,7 +277,7 @@ function update(key, value)
 
 	if (key == "ActiveDEInput")
 	{
-	    connection.rawWrite(93, value == 1 ? 0 : 1, "", "");
+	    connection.rawWrite(93, value == 3 ? 1 : 0, "", "");
 	}
     }
     
